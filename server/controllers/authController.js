@@ -17,7 +17,7 @@ const signup = async (req, res) => {
     });
 
     if (existManager) {
-      return res.status(409).json({ msg: "already exists" });
+      return res.status(200).json({ signupMsg: "account already exists" });
     }
 
     const newManager = Manager({
@@ -32,7 +32,7 @@ const signup = async (req, res) => {
     //save to db
     newManager.save();
     res.status(201).json({
-      msg: "Welcome " + firstName + " " + lastName + "!",
+      signupMsg: "account created",
       obj: newManager,
     });
   } catch (err) {
@@ -51,12 +51,12 @@ const login = async (req, res) => {
     if (foundUser) {
       if (foundUser.password === password) {
         return res.status(200).json({
-          msg:
-            "Welcome " + foundUser.firstName + " " + foundUser.lastName + "!",
+          redirect: true,
           managerEmail: foundUser.email,
         });
       } else {
-        return res.status(400).json({
+        return res.status(200).json({
+          redirect: false,
           errMsg: "incorrect password",
         });
       }
