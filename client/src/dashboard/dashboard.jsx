@@ -18,7 +18,13 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className="sidebar"></div>
-        <div className="main-content"></div>
+        <div className="main-content">
+          <div className="content-item">
+            <h3>Welcome!</h3>
+          </div>
+          <div className="content-item"></div>
+          <div className="content-item"></div>
+        </div>
       </div>
     </>
   );

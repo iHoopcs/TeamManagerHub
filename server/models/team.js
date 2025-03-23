@@ -1,34 +1,34 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const managerSchema = new Schema(
+const teamSchema = new Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    email: {
+    name: {
       type: String,
       required: true,
       unique: true,
     },
-    school: {
+    sport: {
       type: String,
       required: true,
     },
-    teams: {
+    gender: {
+      type: String,
+      required: true,
+    },
+    yearStart: {
+      type: String,
+      required: true,
+    },
+    yearEnd: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: Number,
+      required: true,
+    },
+    members: {
       type: Array,
       required: true,
     },
@@ -36,5 +36,5 @@ const managerSchema = new Schema(
   { timestamps: true }
 );
 
-const Manager = mongoose.model("Manager", managerSchema);
-module.exports = Manager;
+const Team = mongoose.model("Team", teamSchema);
+module.exports = Team;

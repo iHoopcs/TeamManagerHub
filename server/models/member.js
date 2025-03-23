@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const managerSchema = new Schema(
+const memberSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -15,26 +15,34 @@ const managerSchema = new Schema(
       type: Number,
       required: true,
     },
-    password: {
+    role: {
       type: String,
       required: true,
     },
-    email: {
-      type: String,
+    jerseyNumber: {
+      type: Number,
       required: true,
       unique: true,
     },
-    school: {
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    allergies: {
+      type: Boolean,
+      required: true,
+    },
+    sport: {
       type: String,
       required: true,
     },
-    teams: {
-      type: Array,
+    sportGender: {
+      type: String,
       required: true,
     },
   },
   { timestamps: true }
 );
 
-const Manager = mongoose.model("Manager", managerSchema);
-module.exports = Manager;
+const Member = mongoose.model("Member", memberSchema);
+module.exports = Member;

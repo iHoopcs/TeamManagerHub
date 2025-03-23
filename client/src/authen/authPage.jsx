@@ -19,7 +19,7 @@ export const AuthPage = () => {
   const [age, setAge] = useState("");
   const [createPassword, setCreatePassword] = useState("");
   const [createEmail, setCreateEmail] = useState("");
-  const [accountName, setAccountName] = useState("");
+  const [school, setSchool] = useState("");
   const [existsMsg, setExistsMsg] = useState(null);
   const [createMsg, setCreatedMsg] = useState(null);
 
@@ -41,7 +41,7 @@ export const AuthPage = () => {
       age: age,
       password: createPassword,
       email: createEmail,
-      accountName: accountName,
+      school: school,
     };
     try {
       axios
@@ -182,13 +182,13 @@ export const AuthPage = () => {
                 </div>
 
                 <div className="grid-item">
-                  <label className="grid-item">Account Name</label>
+                  <label className="grid-item">School / University</label>
                   <input
                     type="text"
                     required
-                    placeholder="TheRealJoeBurrow"
-                    value={accountName}
-                    onChange={(e) => setAccountName(e.target.value)}
+                    placeholder="School University"
+                    value={school}
+                    onChange={(e) => setSchool(e.target.value)}
                   />
                 </div>
 
