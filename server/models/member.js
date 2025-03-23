@@ -40,6 +40,10 @@ const memberSchema = new Schema(
       type: String,
       required: true,
     },
+    teamCode: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

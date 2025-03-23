@@ -32,6 +32,10 @@ const teamSchema = new Schema(
       type: Array,
       required: true,
     },
+    code: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

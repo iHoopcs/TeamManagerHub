@@ -27,6 +27,7 @@ const addMember = async (req, res) => {
           allergies: member.allergies,
           sport: member.sport,
           sportGender: member.sportGender,
+          teamCode: member.teamCode,
         });
         //check that member doesn't already exist in team
 
@@ -34,7 +35,8 @@ const addMember = async (req, res) => {
         for (let i = 0; i < foundManager.teams.length; i++) {
           if (
             foundManager.teams[i].sport === newMember.sport &&
-            foundManager.teams[i].gender === newMember.sportGender
+            foundManager.teams[i].gender === newMember.sportGender &&
+            foundManager.teams[i].code === newMember.teamCode
           ) {
             //add member to team
             foundManager.teams[i].members.push(newMember);
@@ -51,6 +53,57 @@ const addMember = async (req, res) => {
         res.status(200).json({ msg: "*no teams available to alter*" });
       }
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchTeamMembers = async (req, res) => {
+  const { email, selectedTeamCode, selectedTeamSportGender } = req.body;
+  if (!email || !selectedTeamCode || !selectedTeamSportGender) {
+    res.status(400).json({ msg: "missing payload data" });
+  }
+
+  try {
+    //access manager
+    const foundManager = await Manager.findOne({ email: email });
+
+    //fetch corresponding team
+    let foundTeam = {};
+    for (let i = 0; i < foundManager.teams.length; i++) {
+      if (
+        foundManager.teams[i].code === selectedTeamCode &&
+        foundManager.teams[i].gender === selectedTeamSportGender
+      ) {
+        foundTeam = foundManager.teams[i];
+      }
+    }
+
+    //return members
+    console.log(foundTeam);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchTeams = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    res.status(400).json({ msg: "missing payload data" });
+  }
+  try {
+    //access manager account
+    const foundManager = await Manager.findOne({ email: email });
+    const teams = [];
+
+    //retrieve each team
+    for (let i = 0; i < foundManager.teams.length; i++) {
+      teams.push(foundManager.teams[i]);
+    }
+    res.status(200).json({
+      msg: "*teams fetched*",
+      teams: teams,
+    });
   } catch (err) {
     console.log(err);
   }
@@ -82,6 +135,7 @@ const createTeam = async (req, res) => {
         yearStart: team.yearStart,
         yearEnd: team.yearEnd,
         size: team.size,
+        code: team.code,
       });
 
       //push new team to manager's teams arrays
@@ -100,4 +154,8 @@ const createTeam = async (req, res) => {
 module.exports = {
   addMember,
   createTeam,
+  fetchTeamMembers,
+  fetchTeams,
+  removeMember,
+  editMember,
 };
