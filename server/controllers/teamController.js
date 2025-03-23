@@ -80,7 +80,10 @@ const fetchTeamMembers = async (req, res) => {
     }
 
     //return members
-    console.log(foundTeam);
+    res.status(200).json({
+      msg: "members fetched",
+      members: foundTeam.members,
+    });
   } catch (err) {
     console.log(err);
   }
