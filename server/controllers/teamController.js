@@ -58,9 +58,22 @@ const addMember = async (req, res) => {
   }
 };
 
+//fetch all members for selected team
 const fetchTeamMembers = async (req, res) => {
-  const { email, selectedTeamCode, selectedTeamSportGender } = req.body;
-  if (!email || !selectedTeamCode || !selectedTeamSportGender) {
+  const { email, payload } = req.body;
+
+  //parse payload
+  const parsed = payload.split(" ");
+  selectedTeamCode = parsed[0];
+  selectedTeamSportGender = parsed[1];
+  selectedTeamSport = parsed[2];
+
+  if (
+    !email ||
+    !selectedTeamCode ||
+    !selectedTeamSportGender ||
+    !selectedTeamSport
+  ) {
     res.status(400).json({ msg: "missing payload data" });
   }
 
@@ -73,7 +86,8 @@ const fetchTeamMembers = async (req, res) => {
     for (let i = 0; i < foundManager.teams.length; i++) {
       if (
         foundManager.teams[i].code === selectedTeamCode &&
-        foundManager.teams[i].gender === selectedTeamSportGender
+        foundManager.teams[i].gender === selectedTeamSportGender &&
+        foundManager.teams[i].sport === selectedTeamSport
       ) {
         foundTeam = foundManager.teams[i];
       }
@@ -89,6 +103,7 @@ const fetchTeamMembers = async (req, res) => {
   }
 };
 
+//fetch all teams for Manager account
 const fetchTeams = async (req, res) => {
   const { email } = req.body;
   if (!email) {

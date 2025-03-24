@@ -57,3 +57,48 @@ body {
   flex-direction: column;
   padding: 50px;
 }
+
+.team-tools-flexbox {
+  display: flex;
+  flex-direction: row;
+}
+.team-tools-flexbox > button {
+  border: 1px solid black;
+  padding: 20px;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+.team-tools-flexbox > button:hover {
+  background-color: #ddd;
+}
+
+.team-dropdown {
+  border: 1px solid black;
+  padding: 20px;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.team-dropdown:hover {
+  background-color: #ddd;
+}
+.team-dropdown > option {
+  background-color: white;
+}
+
+.members-container-flexbox {
+  display: flex;
+  flex-direction: column;
+}
+.member-flexbox {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  padding: 20px;
+  justify-content: space-between;
+  margin: 10px;
+}

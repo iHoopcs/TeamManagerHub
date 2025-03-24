@@ -74,6 +74,11 @@ export const AuthPage = () => {
           if (res.data.redirect === false) {
             setLoginErr(res.data.errMsg);
           } else {
+            //store for dashboard access
+            sessionStorage.setItem(
+              "managerEmail",
+              JSON.stringify(res.data.managerEmail)
+            );
             nav("/dashboard");
           }
         })
