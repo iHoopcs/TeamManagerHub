@@ -69,7 +69,8 @@ export const Dashboard = () => {
                   return (
                     <>
                       <option key={key} value={optionValue}>
-                        {team.code} {team.name} {team.gender} {team.sport}
+                        {team.yearStart} - {team.yearEnd} {team.code}{" "}
+                        {team.name} {team.gender} {team.sport}
                       </option>
                     </>
                   );
