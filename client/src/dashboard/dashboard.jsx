@@ -41,7 +41,6 @@ export const Dashboard = () => {
           { email: storedEmail, payload: e.target.value }
         );
         console.log(response);
-        console.log("len", response.data.members.length);
         if (response.data.members.length === 0) {
           //team members = empty
           setMembersIsEmpty(true);
@@ -54,8 +53,7 @@ export const Dashboard = () => {
           sessionStorage.setItem("gender", JSON.stringify(parsed[1]));
           sessionStorage.setItem("sport", JSON.stringify(parsed[2]));
         } else {
-          setMembers(response.data.members);
-
+          setMembersIsEmpty(false);
           //store for add member modal access
           sessionStorage.setItem(
             "sport",
@@ -72,6 +70,7 @@ export const Dashboard = () => {
 
           //display add member button when members fetched
           setAddMemberVisible(true);
+          setMembers(response.data.members);
         }
       } catch (err) {
         console.log(err);
