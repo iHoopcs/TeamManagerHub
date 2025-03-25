@@ -40,15 +40,20 @@ const addMember = async (req, res) => {
           ) {
             //add member to team
             foundManager.teams[i].members.push(newMember);
-            foundManager.markModified("teams"); //notify that array has been updated to db
+            foundManager.markModified("teams"); //notify db that array has been updated to db
             console.log(foundManager.teams[i]);
+
+            //send updated [] to re render
+            res.status(201).json({
+              msg: "*member added*",
+              updatedMembers: foundManager.teams[i].members,
+            });
 
             //save changes to manager account
             await foundManager.save();
             break;
           }
         }
-        res.status(201).json({ msg: "*member added*" });
       } else {
         res.status(200).json({ msg: "*no teams available to alter*" });
       }
