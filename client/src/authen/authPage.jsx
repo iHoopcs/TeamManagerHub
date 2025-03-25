@@ -79,6 +79,10 @@ export const AuthPage = () => {
               "managerEmail",
               JSON.stringify(res.data.managerEmail)
             );
+            sessionStorage.setItem(
+              "managerName",
+              JSON.stringify(res.data.firstName)
+            );
             nav("/dashboard");
           }
         })

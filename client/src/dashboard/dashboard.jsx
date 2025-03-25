@@ -86,7 +86,7 @@ export const Dashboard = () => {
         </div>
         <div className="sidebar"></div>
         <div className="main-content">
-          <h3>Welcome!</h3>
+          <h3>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h3>
           <div className="team-tools-flexbox">
             {/* Dropdown menu */}
             <select className="team-dropdown" onChange={handleDropdown}>

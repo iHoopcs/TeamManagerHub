@@ -53,6 +53,7 @@ const login = async (req, res) => {
         return res.status(200).json({
           redirect: true,
           managerEmail: foundUser.email,
+          firstName: foundUser.firstName,
         });
       } else {
         return res.status(200).json({
