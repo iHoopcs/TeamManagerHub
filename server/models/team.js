@@ -24,10 +24,6 @@ const teamSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
-      type: Number,
-      required: true,
-    },
     members: {
       type: Array,
       required: true,

@@ -20,11 +20,9 @@ const addMember = async (req, res) => {
         const newMember = Member({
           firstName: member.firstName,
           lastName: member.lastName,
-          age: member.age,
           role: member.role,
           jerseyNumber: member.jerseyNumber,
           phoneNumber: member.phoneNumber,
-          allergies: member.allergies,
           sport: member.sport,
           sportGender: member.sportGender,
           teamCode: member.teamCode,

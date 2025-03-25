@@ -8,11 +8,9 @@ export const Modal = (props) => {
   //new member payload
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
-  const [age, setAge] = useState(null);
   const [role, setRole] = useState("");
   const [jerseyNumber, setJerseyNumber] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [allergies, setAllergies] = useState(null);
 
   const handleAddMember = async (e) => {
     e.preventDefault();
@@ -20,11 +18,9 @@ export const Modal = (props) => {
     const newMember = {
       firstName: fName,
       lastName: lName,
-      age: age,
       role: role,
       jerseyNumber: jerseyNumber,
       phoneNumber: phone,
-      allergies: allergies,
       sport: JSON.parse(sessionStorage.getItem("sport")),
       sportGender: JSON.parse(sessionStorage.getItem("gender")),
       teamCode: JSON.parse(sessionStorage.getItem("code")),
@@ -50,11 +46,9 @@ export const Modal = (props) => {
       //clear modal data
       setFName("");
       setLName("");
-      setAge(null);
       setRole("");
       setJerseyNumber(null);
       setPhone(null);
-      setAllergies(null);
     } catch (err) {
       console.log(err);
     }
@@ -95,16 +89,6 @@ export const Modal = (props) => {
                 </div>
 
                 <div className="form-item">
-                  <label>Age:</label>
-                  <input
-                    type="number"
-                    required
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </div>
-
-                <div className="form-item">
                   <label>Role:</label>
                   <select onChange={(e) => setRole(e.target.value)}>
                     <option selected>Select the Member Role</option>
@@ -131,30 +115,6 @@ export const Modal = (props) => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
-                </div>
-
-                <div className="form-item">
-                  <label>Allergies?</label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="allergies"
-                      value={true}
-                      required
-                      onChange={(e) => setAllergies(e.target.value)}
-                    />
-                    True
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="allergies"
-                      value={false}
-                      required
-                      onChange={(e) => setAllergies(e.target.value)}
-                    />
-                    False
-                  </label>
                 </div>
 
                 <button onClick={handleAddMember}>Add Member</button>

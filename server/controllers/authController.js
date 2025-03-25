@@ -2,9 +2,9 @@ const Manager = require("../models/manager");
 
 const signup = async (req, res) => {
   console.log(req.body);
-  const { firstName, lastName, age, password, email, school } = req.body;
+  const { firstName, lastName, password, email, school } = req.body;
 
-  if (!firstName || !lastName || !age || !password || !email || !school) {
+  if (!firstName || !lastName || !password || !email || !school) {
     res.status(400).json({
       errMsg: "An error occurred! - Missing payload data",
     });
@@ -23,7 +23,6 @@ const signup = async (req, res) => {
     const newManager = Manager({
       firstName: firstName,
       lastName: lastName,
-      age: age,
       password: password,
       email: email,
       school: school,

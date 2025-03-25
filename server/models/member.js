@@ -11,10 +11,6 @@ const memberSchema = new Schema(
       type: String,
       required: true,
     },
-    age: {
-      type: Number,
-      required: true,
-    },
     role: {
       type: String,
       required: true,
@@ -26,10 +22,6 @@ const memberSchema = new Schema(
     },
     phoneNumber: {
       type: Number,
-      required: true,
-    },
-    allergies: {
-      type: Boolean,
       required: true,
     },
     sport: {
