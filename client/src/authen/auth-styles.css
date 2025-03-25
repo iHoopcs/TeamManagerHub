@@ -110,3 +110,18 @@ body {
   background-color: azure;
   cursor: pointer;
 }
+
+.login-err {
+  color: red;
+  opacity: 70%;
+}
+
+.exists-msg {
+  color: orange;
+  opacity: 85%;
+}
+
+.created-msg {
+  color: green;
+  opacity: 85%;
+}

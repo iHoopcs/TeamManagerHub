@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import "./auth-styles.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthPage = () => {
+  const nav = useNavigate();
   const [loginVisible, setLoginVisible] = useState(false);
   const [signupVisible, setSignupVisible] = useState(false);
 
   //login payload
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginErr, setLoginErr] = useState(null);
 
   //signup payload
   const [fName, setFName] = useState("");
@@ -16,7 +19,9 @@ export const AuthPage = () => {
   const [age, setAge] = useState("");
   const [createPassword, setCreatePassword] = useState("");
   const [createEmail, setCreateEmail] = useState("");
-  const [accountName, setAccountName] = useState("");
+  const [school, setSchool] = useState("");
+  const [existsMsg, setExistsMsg] = useState(null);
+  const [createMsg, setCreatedMsg] = useState(null);
 
   const clickLoginBtn = () => {
     setLoginVisible(true);
@@ -36,13 +41,18 @@ export const AuthPage = () => {
       age: age,
       password: createPassword,
       email: createEmail,
-      accountName: accountName,
+      school: school,
     };
     try {
       axios
         .post("http://localhost:8080/api/auth/signup", payload)
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
+          if (res.data.signupMsg === "account already exists") {
+            setExistsMsg(res.data.signupMsg);
+          } else {
+            setCreatedMsg(res.data.signupMsg);
+          }
         })
         .catch((err) => console.log(err));
     } catch (err) {
@@ -56,11 +66,22 @@ export const AuthPage = () => {
       email: loginEmail,
       password: loginPassword,
     };
-
     try {
       axios
         .post("http://localhost:8080/api/auth/login", payload)
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log("res", res);
+          if (res.data.redirect === false) {
+            setLoginErr(res.data.errMsg);
+          } else {
+            //store for dashboard access
+            sessionStorage.setItem(
+              "managerEmail",
+              JSON.stringify(res.data.managerEmail)
+            );
+            nav("/dashboard");
+          }
+        })
         .catch((err) => console.log(err));
     } catch (err) {
       console.log(err);
@@ -77,7 +98,7 @@ export const AuthPage = () => {
               <form className="form-flexbox" onSubmit={handleSignIn}>
                 <label>Email</label>
                 <input
-                  type="text"
+                  type="email"
                   required
                   placeholder="joeburrow@uncfsu.edu"
                   value={loginEmail}
@@ -94,6 +115,11 @@ export const AuthPage = () => {
                 />
 
                 <button type="submit">Sign in</button>
+                {loginErr !== null ? (
+                  <h3 className="login-err">*{loginErr}*</h3>
+                ) : (
+                  ""
+                )}
               </form>
             </>
           ) : (
@@ -161,18 +187,31 @@ export const AuthPage = () => {
                 </div>
 
                 <div className="grid-item">
-                  <label className="grid-item">Account Name</label>
+                  <label className="grid-item">School / University</label>
                   <input
                     type="text"
                     required
-                    placeholder="TheRealJoeBurrow"
-                    value={accountName}
-                    onChange={(e) => setAccountName(e.target.value)}
+                    placeholder="School University"
+                    value={school}
+                    onChange={(e) => setSchool(e.target.value)}
                   />
                 </div>
 
                 <div className="grid-item">
                   <button type="submit">Create Account</button>
+                </div>
+
+                <div className="grid-item">
+                  {existsMsg !== null ? (
+                    <h4 className="exists-msg">*{existsMsg}*</h4>
+                  ) : (
+                    ""
+                  )}
+                  {createMsg !== null ? (
+                    <h3 className="created-msg">*{createMsg}*</h3>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </form>
             </>
