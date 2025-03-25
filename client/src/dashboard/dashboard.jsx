@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard-styles.css";
 import axios from "axios";
+import { Modal } from "./add-member-modal/modal";
 
 export const Dashboard = () => {
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [addMemberVisible, setAddMemberVisible] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -30,9 +33,36 @@ export const Dashboard = () => {
       );
       console.log(response);
       setMembers(response.data.members);
+
+      //store for modal access
+      sessionStorage.setItem(
+        "sport",
+        JSON.stringify(response.data.members[0].sport)
+      );
+      sessionStorage.setItem(
+        "gender",
+        JSON.stringify(response.data.members[0].sportGender)
+      );
+      sessionStorage.setItem(
+        "code",
+        JSON.stringify(response.data.members[0].teamCode)
+      );
+
+      //display add member button when members fetched
+      setAddMemberVisible(true);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  // modal display control
+  const openModal = () => {
+    setModalIsVisible(true);
+  };
+
+  //close modal
+  const closeModal = () => {
+    setModalIsVisible(false);
   };
 
   useEffect(() => {
@@ -56,48 +86,56 @@ export const Dashboard = () => {
         </div>
         <div className="sidebar"></div>
         <div className="main-content">
-          <div className="content-item">
-            <h3>Welcome!</h3>
-            <div className="team-tools-flexbox">
-              {/* Dropdown menu */}
-              <select className="team-dropdown" onChange={handleDropdown}>
-                <option>Select Team Roster to View</option>
-                {teams.map((team, key) => {
-                  //format for server manipulation
-                  let optionValue =
-                    team.code + " " + team.gender + " " + team.sport;
-                  return (
-                    <>
-                      <option key={key} value={optionValue}>
-                        {team.yearStart} - {team.yearEnd} {team.code}{" "}
-                        {team.name} {team.gender} {team.sport}
-                      </option>
-                    </>
-                  );
-                })}
-                <option value="createNewTeam">Create New Team</option>
-              </select>
-              {/* TODO: onclick - display popup */}
-              <button>Add Team Member</button>
-            </div>
-
-            {/* Display team members for respective team onclick team */}
-            <div className="members-container-flexbox">
-              {members.map((mem) => {
+          <h3>Welcome!</h3>
+          <div className="team-tools-flexbox">
+            {/* Dropdown menu */}
+            <select className="team-dropdown" onChange={handleDropdown}>
+              <option selected disabled>
+                Select Team Roster to View
+              </option>
+              {teams.map((team, key) => {
+                //format for server manipulation
+                let optionValue =
+                  team.code + " " + team.gender + " " + team.sport;
                 return (
                   <>
-                    <div className="member-flexbox">
-                      <h3>{mem.firstName}</h3>
-                      <h3>{mem.lastName}</h3>
-                      <h3># {mem.jerseyNumber}</h3>
-                      <h3>Age: {mem.age}</h3>
-                      <h3>{mem.phoneNumber}</h3>
-                      <h3>{mem.role}</h3>
-                    </div>
+                    <option key={key} value={optionValue}>
+                      {team.yearStart} - {team.yearEnd} {team.code} {team.name}{" "}
+                      {team.gender} {team.sport}
+                    </option>
                   </>
                 );
               })}
-            </div>
+              <option value="createNewTeam">Create New Team</option>
+            </select>
+            {addMemberVisible ? (
+              <button onClick={openModal}>Add Team Member</button>
+            ) : null}
+
+            {/* Add Member Modal */}
+            <Modal
+              isOpen={modalIsVisible}
+              closeModal={closeModal}
+              setMembers={setMembers}
+            />
+          </div>
+
+          {/* Display team members for respective team onclick team */}
+          <div className="members-container-flexbox">
+            {members.map((mem) => {
+              return (
+                <>
+                  <div className="member-flexbox">
+                    <h3>{mem.firstName}</h3>
+                    <h3>{mem.lastName}</h3>
+                    <h3># {mem.jerseyNumber}</h3>
+                    <h3>Age: {mem.age}</h3>
+                    <h3>{mem.phoneNumber}</h3>
+                    <h3>{mem.role}</h3>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>

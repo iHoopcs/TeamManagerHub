@@ -98,7 +98,7 @@ export const AuthPage = () => {
               <form className="form-flexbox" onSubmit={handleSignIn}>
                 <label>Email</label>
                 <input
-                  type="text"
+                  type="email"
                   required
                   placeholder="joeburrow@uncfsu.edu"
                   value={loginEmail}
