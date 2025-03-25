@@ -13,6 +13,10 @@ export const Modal = (props) => {
   const [phone, setPhone] = useState(null);
 
   const handleAddMember = async (e) => {
+    const storedSport = JSON.parse(sessionStorage.getItem("sport"));
+    const storedGender = JSON.parse(sessionStorage.getItem("gender"));
+    const storedCode = JSON.parse(sessionStorage.getItem("code"));
+    const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
     e.preventDefault();
 
     const newMember = {
@@ -21,9 +25,9 @@ export const Modal = (props) => {
       role: role,
       jerseyNumber: jerseyNumber,
       phoneNumber: phone,
-      sport: JSON.parse(sessionStorage.getItem("sport")),
-      sportGender: JSON.parse(sessionStorage.getItem("gender")),
-      teamCode: JSON.parse(sessionStorage.getItem("code")),
+      sport: storedSport,
+      sportGender: storedGender,
+      teamCode: storedCode,
     };
 
     console.log(newMember);
@@ -33,15 +37,12 @@ export const Modal = (props) => {
       const response = await axios.post(
         "http://localhost:8080/api/add-member",
         {
-          email: JSON.parse(sessionStorage.getItem("managerEmail")),
+          email: storedEmail,
           member: newMember,
         }
       );
 
       console.log(response);
-      //update members - re render
-      setMembers(response.data.updatedMembers);
-      closeModal();
 
       //clear modal data
       setFName("");
@@ -49,6 +50,10 @@ export const Modal = (props) => {
       setRole("");
       setJerseyNumber(null);
       setPhone(null);
+
+      //update members - re render
+      setMembers(response.data.updatedMembers);
+      closeModal();
     } catch (err) {
       console.log(err);
     }
@@ -91,7 +96,9 @@ export const Modal = (props) => {
                 <div className="form-item">
                   <label>Role:</label>
                   <select onChange={(e) => setRole(e.target.value)}>
-                    <option selected>Select the Member Role</option>
+                    <option selected disabled>
+                      Select the Member Role
+                    </option>
                     <option value="Player">Player</option>
                     <option value="Coach">Coach</option>
                   </select>

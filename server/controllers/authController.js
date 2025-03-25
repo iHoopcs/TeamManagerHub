@@ -46,13 +46,14 @@ const login = async (req, res) => {
     return res.status(400).json({ errMsg: "missing payload data" });
   Manager.findOne({
     email: email,
-  }).then(async (foundUser) => {
-    if (foundUser) {
-      if (foundUser.password === password) {
+  }).then(async (foundManager) => {
+    if (foundManager) {
+      if (foundManager.password === password) {
         return res.status(200).json({
           redirect: true,
-          managerEmail: foundUser.email,
-          firstName: foundUser.firstName,
+          managerEmail: foundManager.email,
+          firstName: foundManager.firstName,
+          school: foundManager.school,
         });
       } else {
         return res.status(200).json({

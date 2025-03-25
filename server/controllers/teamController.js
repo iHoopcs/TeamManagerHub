@@ -6,6 +6,7 @@ const Manager = require("../models/manager");
 const addMember = async (req, res) => {
   //access manager team array by unique email
   const { email, member } = req.body;
+  console.log(req.body);
   if (!email || !member) {
     return res.status(400).json({ msg: "missing payload data" });
   }
@@ -64,7 +65,7 @@ const addMember = async (req, res) => {
 //fetch all members for selected team
 const fetchTeamMembers = async (req, res) => {
   const { email, payload } = req.body;
-
+  console.log(req.body);
   //parse payload
   const parsed = payload.split(" ");
   selectedTeamCode = parsed[0];
@@ -95,7 +96,7 @@ const fetchTeamMembers = async (req, res) => {
         foundTeam = foundManager.teams[i];
       }
     }
-
+    console.log(foundTeam);
     //return members
     res.status(200).json({
       msg: "members fetched",
@@ -136,9 +137,10 @@ const editMember = async (req, res) => {};
 
 //create empty new team
 const createTeam = async (req, res) => {
-  const { email, team } = req.body;
+  const { email, team, school } = req.body;
+  console.log(req.body);
   //check that received payload isn't empty
-  if (!email || !team) {
+  if (!email || !team || !school) {
     res.status(400).json({ msg: "missing payload data" });
   }
 
@@ -148,6 +150,13 @@ const createTeam = async (req, res) => {
     if (!foundManager) {
       res.status(400).json({ msg: "error accessing manager account data" });
     } else {
+      //parse school to get code
+      let parsed = school.split(" ");
+      let schoolCode = "";
+      for (let i = 0; i < parsed.length; i++) {
+        schoolCode += parsed[i].charAt(0);
+      }
+
       //create new team w/ payload data
       const newTeam = Team({
         name: team.name,
@@ -155,8 +164,7 @@ const createTeam = async (req, res) => {
         gender: team.gender,
         yearStart: team.yearStart,
         yearEnd: team.yearEnd,
-        size: team.size,
-        code: team.code,
+        code: schoolCode,
       });
 
       //push new team to manager's teams arrays
@@ -165,7 +173,11 @@ const createTeam = async (req, res) => {
       //update manager's account
       foundManager.save();
 
-      res.status(201).json({ msg: "new team created" });
+      res.status(201).json({
+        updatedTeams: foundManager.teams,
+        msg: "new team created",
+        schoolCode: schoolCode,
+      });
     }
   } catch (err) {
     console.log(err);

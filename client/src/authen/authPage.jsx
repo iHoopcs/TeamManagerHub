@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./auth-styles.css";
 import axios from "axios";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const AuthPage = () => {
   const nav = useNavigate();
@@ -81,6 +81,11 @@ export const AuthPage = () => {
               "managerName",
               JSON.stringify(res.data.firstName)
             );
+            sessionStorage.setItem(
+              "managerSchool",
+              JSON.stringify(res.data.school)
+            );
+
             nav("/dashboard");
           }
         })
