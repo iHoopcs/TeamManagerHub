@@ -1,6 +1,5 @@
 import React from "react";
 import "./startOrderModal.css";
-import { RestaurantCard } from "./restaurant-card/restaurantCard";
 const restaurants = require("../../restaurants.json");
 
 export const StartOrderModal = (props) => {
@@ -16,9 +15,16 @@ export const StartOrderModal = (props) => {
               <button onClick={closeModal}>X</button>
             </div>
 
-            <div className="slideshow-container">
-              {restaurants.map((item) => {
-                return <RestaurantCard name={item.name} logo={item.logo} />;
+            <div className="display-container">
+              {restaurants.map((item, index) => {
+                return (
+                  <a
+                    href={`/restaurants/${index}/${item.name}/`}
+                    className="logo-link"
+                  >
+                    <img src={item.logo} alt={item.name} />
+                  </a>
+                );
               })}
             </div>
           </div>
