@@ -74,6 +74,10 @@ body {
 .team-tools-flexbox > button:hover {
   background-color: #ddd;
 }
+.team-tools-flexbox > button:disabled {
+  background-color: white;
+  cursor: auto;
+}
 
 .team-dropdown {
   border: 1px solid black;

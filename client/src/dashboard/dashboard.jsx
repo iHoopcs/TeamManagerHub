@@ -9,8 +9,9 @@ export const Dashboard = () => {
   const [members, setMembers] = useState([]);
   const [membersIsEmpty, setMembersIsEmpty] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false); //add member modal
-  const [addMemberVisible, setAddMemberVisible] = useState(false);
+  const [buttonControlsVisible, setButtonControlsVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
+  const [startOrderDisabled, setStartOrderButtonDisabled] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -28,7 +29,7 @@ export const Dashboard = () => {
   const handleDropdown = async (e) => {
     if (e.target.value === "newTeam") {
       setNewTeamModalVisible(true);
-      setAddMemberVisible(false);
+      setButtonControlsVisible(false);
       return;
     } else {
       //display team members
@@ -44,7 +45,8 @@ export const Dashboard = () => {
         if (response.data.members.length === 0) {
           //team members = empty
           setMembersIsEmpty(true);
-          setAddMemberVisible(true); //display add member button
+          setButtonControlsVisible(true); //display add member button
+          setStartOrderButtonDisabled(true);
 
           //parse dropdrown title
           const parsed = e.target.value.split(" ");
@@ -68,8 +70,9 @@ export const Dashboard = () => {
             JSON.stringify(response.data.members[0].teamCode)
           );
 
-          //display add member button when members fetched
-          setAddMemberVisible(true);
+          //display add member & start order button when members fetched
+          setButtonControlsVisible(true);
+          setStartOrderButtonDisabled(false);
           setMembers(response.data.members);
         }
       } catch (err) {
@@ -135,9 +138,16 @@ export const Dashboard = () => {
               closeModal={closeModal}
               setTeams={setTeams}
             />
-            {addMemberVisible ? (
-              <button onClick={openModal}>Add Team Member</button>
-            ) : null}
+            {
+              //add member button & start order button
+              buttonControlsVisible ? (
+                <>
+                  <button onClick={openModal}>Add Team Member</button>
+                  <button disabled={startOrderDisabled}>Start Order</button>
+                </>
+              ) : null
+            }
+
             {/* Add Member Modal */}
             <Modal
               isOpen={modalIsVisible}
