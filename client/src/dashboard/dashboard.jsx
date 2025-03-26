@@ -3,6 +3,7 @@ import "./dashboard-styles.css";
 import axios from "axios";
 import { Modal } from "./add-member-modal/modal";
 import { NewTeamModal } from "./create-team-modal/newTeamModal";
+import { StartOrderModal } from "./start-order-modal/startOrderModal";
 
 export const Dashboard = () => {
   const [teams, setTeams] = useState([]);
@@ -12,6 +13,7 @@ export const Dashboard = () => {
   const [buttonControlsVisible, setButtonControlsVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   const [startOrderDisabled, setStartOrderButtonDisabled] = useState(false);
+  const [orderModalVisible, setOrderModalVisible] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -81,6 +83,12 @@ export const Dashboard = () => {
     }
   };
 
+  //start order modal
+  const openStartOrderModal = () => {
+    setOrderModalVisible(true);
+  };
+
+  //add member modal
   const openModal = () => {
     setModalIsVisible(true);
   };
@@ -88,6 +96,7 @@ export const Dashboard = () => {
   const closeModal = () => {
     setModalIsVisible(false);
     setNewTeamModalVisible(false);
+    setOrderModalVisible(false);
   };
 
   useEffect(() => {
@@ -111,7 +120,7 @@ export const Dashboard = () => {
         </div>
         <div className="sidebar"></div>
         <div className="main-content">
-          <h3>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h3>
+          <h2>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h2>
           <div className="team-tools-flexbox">
             {/* Dropdown menu */}
             <select className="team-dropdown" onChange={handleDropdown}>
@@ -143,7 +152,16 @@ export const Dashboard = () => {
               buttonControlsVisible ? (
                 <>
                   <button onClick={openModal}>Add Team Member</button>
-                  <button disabled={startOrderDisabled}>Start Order</button>
+                  <button
+                    disabled={startOrderDisabled}
+                    onClick={openStartOrderModal}
+                  >
+                    Start Order
+                  </button>
+                  <StartOrderModal
+                    isOpen={orderModalVisible}
+                    closeModal={closeModal}
+                  />
                 </>
               ) : null
             }
