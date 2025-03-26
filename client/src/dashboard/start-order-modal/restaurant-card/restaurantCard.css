@@ -1,12 +1,12 @@
 .logo {
   width: 100%;
   max-width: 15vw;
-  margin: 10px;
   border: 1px solid rgb(0, 0, 0, 0.5);
   border-radius: 15px;
+  margin-bottom: 15px;
 }
 
 .logo:hover {
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }

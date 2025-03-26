@@ -6,8 +6,9 @@
 }
 .modal-content {
   overflow-y: auto;
+  max-height: 65vh;
+  max-width: 75%;
   border: 1px solid black;
-  border-radius: 20px;
   background-color: white;
   cursor: auto;
   position: fixed;
@@ -16,15 +17,10 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  display: flex;
-  flex-direction: column;
 }
 .header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  height: 40px;
-  align-items: center;
 }
 /* X button */
 .header > button {
@@ -40,4 +36,5 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
