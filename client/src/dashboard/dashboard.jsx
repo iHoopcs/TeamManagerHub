@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard-styles.css";
 import axios from "axios";
-import { Modal } from "./add-member-modal/modal";
 import { NewTeamModal } from "./create-team-modal/newTeamModal";
 import { StartOrderModal } from "./start-order-modal/startOrderModal";
-
+import { AddMemberModal } from "./add-member-modal/addMemberModal";
 export const Dashboard = () => {
+  const [managerName, setManagerName] = useState("");
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
   const [membersIsEmpty, setMembersIsEmpty] = useState(false);
@@ -26,6 +26,10 @@ export const Dashboard = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const fetchManagerName = () => {
+    setManagerName(JSON.parse(sessionStorage.getItem("managerName")));
   };
 
   const handleDropdown = async (e) => {
@@ -101,6 +105,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     fetchTeams();
+    fetchManagerName();
   }, []);
 
   return (
@@ -111,16 +116,12 @@ export const Dashboard = () => {
             <button>TeamManagerHub</button>
           </div>
           <div className="header-item">
-            <button>Teams</button>
-            <button>Order</button>
-          </div>
-          <div className="header-item">
             <button>Profile</button>
           </div>
         </div>
         <div className="sidebar"></div>
         <div className="main-content">
-          <h2>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h2>
+          <h2>Welcome {managerName}!</h2>
           <div className="team-tools-flexbox">
             {/* Dropdown menu */}
             <select className="team-dropdown" onChange={handleDropdown}>
@@ -148,7 +149,7 @@ export const Dashboard = () => {
               setTeams={setTeams}
             />
             {
-              //add member button & start order button
+              //display control buttons if team.members.length != 0
               buttonControlsVisible ? (
                 <>
                   <button onClick={openModal}>Add Team Member</button>
@@ -167,7 +168,7 @@ export const Dashboard = () => {
             }
 
             {/* Add Member Modal */}
-            <Modal
+            <AddMemberModal
               isOpen={modalIsVisible}
               closeModal={closeModal}
               setMembers={setMembers}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./modal-styles.css";
 import axios from "axios";
+import "./addMemberModal-styles.css";
 
-export const Modal = (props) => {
+export const AddMemberModal = (props) => {
   const { isOpen, closeModal, setMembers } = props;
 
   //new member payload
