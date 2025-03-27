@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./dashboard-styles.css";
 import axios from "axios";
 import { Modal } from "./add-member-modal/modal";
+import { NewTeamModal } from "./create-team-modal/newTeamModal";
+import { StartOrderModal } from "./start-order-modal/startOrderModal";
 
 export const Dashboard = () => {
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [addMemberVisible, setAddMemberVisible] = useState(false);
+  const [membersIsEmpty, setMembersIsEmpty] = useState(false);
+  const [modalIsVisible, setModalIsVisible] = useState(false); //add member modal
+  const [buttonControlsVisible, setButtonControlsVisible] = useState(false);
+  const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
+  const [startOrderDisabled, setStartOrderButtonDisabled] = useState(false);
+  const [orderModalVisible, setOrderModalVisible] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -23,46 +29,74 @@ export const Dashboard = () => {
   };
 
   const handleDropdown = async (e) => {
-    const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
+    if (e.target.value === "newTeam") {
+      setNewTeamModalVisible(true);
+      setButtonControlsVisible(false);
+      return;
+    } else {
+      //display team members
+      const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
 
-    //request team corresponding team members - based on team sport, gender, code
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/team-members",
-        { email: storedEmail, payload: e.target.value }
-      );
-      console.log(response);
-      setMembers(response.data.members);
+      //request team corresponding team members - based on team sport, gender, code
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/team-members",
+          { email: storedEmail, payload: e.target.value }
+        );
+        console.log(response);
+        if (response.data.members.length === 0) {
+          //team members = empty
+          setMembersIsEmpty(true);
+          setButtonControlsVisible(true); //display add member button
+          setStartOrderButtonDisabled(true);
 
-      //store for modal access
-      sessionStorage.setItem(
-        "sport",
-        JSON.stringify(response.data.members[0].sport)
-      );
-      sessionStorage.setItem(
-        "gender",
-        JSON.stringify(response.data.members[0].sportGender)
-      );
-      sessionStorage.setItem(
-        "code",
-        JSON.stringify(response.data.members[0].teamCode)
-      );
+          //parse dropdrown title
+          const parsed = e.target.value.split(" ");
+          //store values for add member modal
+          sessionStorage.setItem("code", JSON.stringify(parsed[0]));
+          sessionStorage.setItem("gender", JSON.stringify(parsed[1]));
+          sessionStorage.setItem("sport", JSON.stringify(parsed[2]));
+        } else {
+          setMembersIsEmpty(false);
+          //store for add member modal access
+          sessionStorage.setItem(
+            "sport",
+            JSON.stringify(response.data.members[0].sport)
+          );
+          sessionStorage.setItem(
+            "gender",
+            JSON.stringify(response.data.members[0].sportGender)
+          );
+          sessionStorage.setItem(
+            "code",
+            JSON.stringify(response.data.members[0].teamCode)
+          );
 
-      //display add member button when members fetched
-      setAddMemberVisible(true);
-    } catch (err) {
-      console.log(err);
+          //display add member & start order button when members fetched
+          setButtonControlsVisible(true);
+          setStartOrderButtonDisabled(false);
+          setMembers(response.data.members);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
-  // modal display control
+  //start order modal
+  const openStartOrderModal = () => {
+    setOrderModalVisible(true);
+  };
+
+  //add member modal
   const openModal = () => {
     setModalIsVisible(true);
   };
 
-  //close modal
   const closeModal = () => {
     setModalIsVisible(false);
+    setNewTeamModalVisible(false);
+    setOrderModalVisible(false);
   };
 
   useEffect(() => {
@@ -86,7 +120,7 @@ export const Dashboard = () => {
         </div>
         <div className="sidebar"></div>
         <div className="main-content">
-          <h3>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h3>
+          <h2>Welcome {JSON.parse(sessionStorage.getItem("managerName"))}!</h2>
           <div className="team-tools-flexbox">
             {/* Dropdown menu */}
             <select className="team-dropdown" onChange={handleDropdown}>
@@ -106,11 +140,31 @@ export const Dashboard = () => {
                   </>
                 );
               })}
-              <option value="createNewTeam">Create New Team</option>
+              <option value="newTeam">Create New Team</option>
             </select>
-            {addMemberVisible ? (
-              <button onClick={openModal}>Add Team Member</button>
-            ) : null}
+            <NewTeamModal
+              isOpen={newTeamModalVisible}
+              closeModal={closeModal}
+              setTeams={setTeams}
+            />
+            {
+              //add member button & start order button
+              buttonControlsVisible ? (
+                <>
+                  <button onClick={openModal}>Add Team Member</button>
+                  <button
+                    disabled={startOrderDisabled}
+                    onClick={openStartOrderModal}
+                  >
+                    Start Order
+                  </button>
+                  <StartOrderModal
+                    isOpen={orderModalVisible}
+                    closeModal={closeModal}
+                  />
+                </>
+              ) : null
+            }
 
             {/* Add Member Modal */}
             <Modal
@@ -122,20 +176,23 @@ export const Dashboard = () => {
 
           {/* Display team members for respective team onclick team */}
           <div className="members-container-flexbox">
-            {members.map((mem) => {
-              return (
-                <>
-                  <div className="member-flexbox">
-                    <h3>{mem.firstName}</h3>
-                    <h3>{mem.lastName}</h3>
-                    <h3># {mem.jerseyNumber}</h3>
-                    <h3>Age: {mem.age}</h3>
-                    <h3>{mem.phoneNumber}</h3>
-                    <h3>{mem.role}</h3>
-                  </div>
-                </>
-              );
-            })}
+            {membersIsEmpty ? (
+              <h3>There are no members on this team yet</h3>
+            ) : (
+              members.map((mem) => {
+                return (
+                  <>
+                    <div className="member-flexbox">
+                      <h3>{mem.firstName}</h3>
+                      <h3>{mem.lastName}</h3>
+                      <h3># {mem.jerseyNumber}</h3>
+                      <h3>{mem.phoneNumber}</h3>
+                      <h3>{mem.role}</h3>
+                    </div>
+                  </>
+                );
+              })
+            )}
           </div>
         </div>
       </div>

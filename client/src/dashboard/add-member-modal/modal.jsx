@@ -8,26 +8,26 @@ export const Modal = (props) => {
   //new member payload
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
-  const [age, setAge] = useState(null);
   const [role, setRole] = useState("");
   const [jerseyNumber, setJerseyNumber] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [allergies, setAllergies] = useState(null);
 
   const handleAddMember = async (e) => {
+    const storedSport = JSON.parse(sessionStorage.getItem("sport"));
+    const storedGender = JSON.parse(sessionStorage.getItem("gender"));
+    const storedCode = JSON.parse(sessionStorage.getItem("code"));
+    const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
     e.preventDefault();
 
     const newMember = {
       firstName: fName,
       lastName: lName,
-      age: age,
       role: role,
       jerseyNumber: jerseyNumber,
       phoneNumber: phone,
-      allergies: allergies,
-      sport: JSON.parse(sessionStorage.getItem("sport")),
-      sportGender: JSON.parse(sessionStorage.getItem("gender")),
-      teamCode: JSON.parse(sessionStorage.getItem("code")),
+      sport: storedSport,
+      sportGender: storedGender,
+      teamCode: storedCode,
     };
 
     console.log(newMember);
@@ -37,24 +37,23 @@ export const Modal = (props) => {
       const response = await axios.post(
         "http://localhost:8080/api/add-member",
         {
-          email: JSON.parse(sessionStorage.getItem("managerEmail")),
+          email: storedEmail,
           member: newMember,
         }
       );
 
       console.log(response);
-      //update members - re render
-      setMembers(response.data.updatedMembers);
-      closeModal();
 
       //clear modal data
       setFName("");
       setLName("");
-      setAge(null);
       setRole("");
       setJerseyNumber(null);
       setPhone(null);
-      setAllergies(null);
+
+      //update members - re render
+      setMembers(response.data.updatedMembers);
+      closeModal();
     } catch (err) {
       console.log(err);
     }
@@ -95,19 +94,11 @@ export const Modal = (props) => {
                 </div>
 
                 <div className="form-item">
-                  <label>Age:</label>
-                  <input
-                    type="number"
-                    required
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </div>
-
-                <div className="form-item">
                   <label>Role:</label>
                   <select onChange={(e) => setRole(e.target.value)}>
-                    <option selected>Select the Member Role</option>
+                    <option selected disabled>
+                      Select the Member Role
+                    </option>
                     <option value="Player">Player</option>
                     <option value="Coach">Coach</option>
                   </select>
@@ -131,30 +122,6 @@ export const Modal = (props) => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
-                </div>
-
-                <div className="form-item">
-                  <label>Allergies?</label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="allergies"
-                      value={true}
-                      required
-                      onChange={(e) => setAllergies(e.target.value)}
-                    />
-                    True
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="allergies"
-                      value={false}
-                      required
-                      onChange={(e) => setAllergies(e.target.value)}
-                    />
-                    False
-                  </label>
                 </div>
 
                 <button onClick={handleAddMember}>Add Member</button>

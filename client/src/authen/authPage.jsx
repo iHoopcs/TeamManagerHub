@@ -16,7 +16,6 @@ export const AuthPage = () => {
   //signup payload
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
-  const [age, setAge] = useState("");
   const [createPassword, setCreatePassword] = useState("");
   const [createEmail, setCreateEmail] = useState("");
   const [school, setSchool] = useState("");
@@ -38,7 +37,6 @@ export const AuthPage = () => {
     const payload = {
       firstName: fName,
       lastName: lName,
-      age: age,
       password: createPassword,
       email: createEmail,
       school: school,
@@ -71,7 +69,7 @@ export const AuthPage = () => {
         .post("http://localhost:8080/api/auth/login", payload)
         .then((res) => {
           console.log("res", res);
-          if (res.data.redirect === false) {
+          if (res.status === 200 && res.data.redirect === false) {
             setLoginErr(res.data.errMsg);
           } else {
             //store for dashboard access
@@ -83,10 +81,18 @@ export const AuthPage = () => {
               "managerName",
               JSON.stringify(res.data.firstName)
             );
+            sessionStorage.setItem(
+              "managerSchool",
+              JSON.stringify(res.data.school)
+            );
+
             nav("/dashboard");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setLoginErr(err.response.data.errMsg);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -154,17 +160,6 @@ export const AuthPage = () => {
                     placeholder="Burrow"
                     value={lName}
                     onChange={(e) => setLName(e.target.value)}
-                  />
-                </div>
-
-                <div className="grid-item">
-                  <label>Age</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="Enter age"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
                   />
                 </div>
 
