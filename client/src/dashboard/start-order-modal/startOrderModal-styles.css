@@ -1,38 +1,52 @@
-.modal-background {
+.order-modal-background {
   background-color: rgb(0, 0, 0, 0.5);
   width: 100vw;
   height: 100vh;
+  /* position in center of viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
   cursor: auto;
 }
-.modal-content {
-  overflow-y: auto;
-  max-height: 65vh;
-  max-width: 75%;
-  border: 1px solid black;
+.order-modal-content {
+  /* TODO */
   background-color: white;
-  cursor: auto;
+  width: 100%;
+  overflow-y: scroll;
+  max-width: fit-content;
+  max-height: 70%;
   position: fixed;
+  margin: auto;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
+  padding: 20px;
 }
-.header {
+.order-header {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.order-header > h2 {
+  font-size: xx-large;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 /* X button */
-.header > button {
+.order-header > button {
   height: 5vh;
   width: 5vh;
   border: 1px solid black;
+  border-radius: 5px;
 }
-.header > button:hover {
+.order-header > button:hover {
   background-color: red;
   cursor: pointer;
 }
-.display-container {
+.order-display-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -40,7 +54,7 @@
 }
 .logo-link {
   height: 20vh;
-  width: 15vw;
+  width: 20vw;
   margin-bottom: 15px;
 }
 img {

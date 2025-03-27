@@ -143,11 +143,6 @@ export const Dashboard = () => {
               })}
               <option value="newTeam">Create New Team</option>
             </select>
-            <NewTeamModal
-              isOpen={newTeamModalVisible}
-              closeModal={closeModal}
-              setTeams={setTeams}
-            />
             {
               //display control buttons if team.members.length != 0
               buttonControlsVisible ? (
@@ -159,15 +154,18 @@ export const Dashboard = () => {
                   >
                     Start Order
                   </button>
-                  <StartOrderModal
-                    isOpen={orderModalVisible}
-                    closeModal={closeModal}
-                  />
                 </>
               ) : null
             }
-
-            {/* Add Member Modal */}
+            <NewTeamModal
+              isOpen={newTeamModalVisible}
+              closeModal={closeModal}
+              setTeams={setTeams}
+            />
+            <StartOrderModal
+              isOpen={orderModalVisible}
+              closeModal={closeModal}
+            />
             <AddMemberModal
               isOpen={modalIsVisible}
               closeModal={closeModal}

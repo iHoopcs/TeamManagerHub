@@ -21,11 +21,6 @@ body {
   flex-direction: row;
   justify-content: space-between;
   height: 10vh;
-  padding: 20px;
-}
-.header .header-item:nth-child(2) {
-  display: flex;
-  gap: 20px;
 }
 
 .header-item > button {
@@ -48,6 +43,7 @@ body {
 .sidebar {
   grid-area: sidebar;
   background-color: #ddd;
+  width: 100%;
 }
 
 /*main content section*/
@@ -55,7 +51,7 @@ body {
   grid-area: main-content;
   display: flex;
   flex-direction: column;
-  padding: 50px;
+  padding: 20px;
 }
 
 .team-tools-flexbox {
@@ -70,6 +66,8 @@ body {
   border-radius: 20px;
   margin-bottom: 10px;
   margin-left: 10px;
+  width: 100%;
+  max-width: 20vw;
 }
 .team-tools-flexbox > button:hover {
   background-color: #ddd;
@@ -86,6 +84,8 @@ body {
   cursor: pointer;
   border-radius: 20px;
   margin-bottom: 10px;
+  width: 100%;
+  text-wrap: wrap;
 }
 .team-dropdown:hover {
   background-color: #ddd;

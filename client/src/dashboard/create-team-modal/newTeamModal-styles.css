@@ -1,15 +1,14 @@
-.modal-background {
+.team-modal-background {
   background-color: rgb(0, 0, 0, 0.5);
   width: 100vw;
   height: 100vh;
-  position: fixed;
+  cursor: pointer;
   top: 0;
   left: 0;
-  cursor: pointer;
-  z-index: 9;
+  position: fixed;
 }
 
-.modal-content {
+.team-modal-content {
   border: 1px solid black;
   border-radius: 20px;
   width: 100%;
@@ -17,23 +16,23 @@
   height: fit-content;
   background-color: white;
   padding: 50px;
+  /* position in center of viewport */
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
+  right: 0;
+  left: 0;
   margin: auto;
-  z-index: 10;
   cursor: auto;
 }
-.form-container {
+.team-form-container {
   display: flex;
   flex-direction: column;
 }
-.form-container .form-item:nth-of-type(3) {
+.team-form-container .form-item:nth-of-type(3) {
   width: 100%;
 }
-.form-header {
+.team-form-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -42,17 +41,18 @@
   align-items: center;
 }
 /* X button */
-.form-header > button {
+.team-form-header > button {
   height: 5vh;
   width: 5vh;
   border: 1px solid black;
+  border-radius: 5px;
 }
-.form-header > button:hover {
+.team-form-header > button:hover {
   background-color: red;
   cursor: pointer;
 }
 
-.form-container .form-item {
+.team-form-container .team-form-item {
   font-size: larger;
   display: flex;
   flex-direction: row;
@@ -61,7 +61,7 @@
 }
 
 /* Create Team   Button */
-.form-container > button {
+.team-form-container > button {
   border: 1px solid black;
   width: 100%;
   max-width: 20vw;
@@ -71,19 +71,19 @@
   border-radius: 20px;
   font-size: medium;
 }
-.form-container > button:hover {
+.team-form-container > button:hover {
   background-color: #ddd;
   cursor: pointer;
 }
-.form-container hr {
+.team-form-container hr {
   border: 1px solid #ddd;
   width: 100%;
   margin-bottom: 30px;
 }
-.form-item > label {
+.team-form-item > label {
   width: 10vw;
 }
-.form-item > input {
+.team-form-item > input {
   width: 20vw;
   padding: 5px;
   font-size: large;
