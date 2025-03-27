@@ -19,7 +19,7 @@ export const StartOrderModal = (props) => {
               {restaurants.map((item, index) => {
                 return (
                   <a
-                    href={`/restaurants/${index}/${item.name}/`}
+                    href={`/restaurants/order/${item.name}/${index}`}
                     className="logo-link"
                   >
                     <img src={item.logo} alt={item.name} />
