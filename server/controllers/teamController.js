@@ -68,9 +68,9 @@ const fetchTeamMembers = async (req, res) => {
   console.log(req.body);
   //parse payload
   const parsed = payload.split(" ");
-  selectedTeamCode = parsed[0];
-  selectedTeamSportGender = parsed[1];
-  selectedTeamSport = parsed[2];
+  selectedTeamCode = parsed[2];
+  selectedTeamSportGender = parsed[3];
+  selectedTeamSport = parsed[4];
 
   if (
     !email ||

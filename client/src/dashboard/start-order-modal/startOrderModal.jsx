@@ -2,7 +2,7 @@ import React from "react";
 import "./startOrderModal-styles.css";
 const restaurants = require("../../restaurants.json");
 export const StartOrderModal = (props) => {
-  const { isOpen, closeModal } = props;
+  const { isOpen,  closeOrderModal } = props;
 
   return (
     <>
@@ -11,14 +11,14 @@ export const StartOrderModal = (props) => {
           <div className="order-modal-content">
             <div className="order-header">
               <h2>Where are you ordering from?</h2>
-              <button onClick={closeModal}>X</button>
+              <button onClick={closeOrderModal}>X</button>
             </div>
 
             <div className="order-display-container">
               {restaurants.map((item, index) => {
                 return (
                   <a
-                    href={`/restaurants/order/${item.name}/${index}`}
+                    href={`/restaurants/order/${index}/${item.name}`}
                     className="logo-link"
                   >
                     <img src={item.logo} alt={item.name} />

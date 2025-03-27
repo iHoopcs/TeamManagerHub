@@ -13,10 +13,8 @@ export const AddMemberModal = (props) => {
   const [phone, setPhone] = useState(null);
 
   const handleAddMember = async (e) => {
-    const storedSport = JSON.parse(sessionStorage.getItem("sport"));
-    const storedGender = JSON.parse(sessionStorage.getItem("gender"));
-    const storedCode = JSON.parse(sessionStorage.getItem("code"));
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
+    const storedTeam = JSON.parse(sessionStorage.getItem("team"));
     e.preventDefault();
 
     const newMember = {
@@ -25,9 +23,9 @@ export const AddMemberModal = (props) => {
       role: role,
       jerseyNumber: jerseyNumber,
       phoneNumber: phone,
-      sport: storedSport,
-      sportGender: storedGender,
-      teamCode: storedCode,
+      sport: storedTeam.sport,
+      sportGender: storedTeam.gender,
+      teamCode: storedTeam.code,
     };
 
     console.log(newMember);

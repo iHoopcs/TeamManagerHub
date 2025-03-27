@@ -4,16 +4,20 @@ import axios from "axios";
 import { NewTeamModal } from "./create-team-modal/newTeamModal";
 import { StartOrderModal } from "./start-order-modal/startOrderModal";
 import { AddMemberModal } from "./add-member-modal/addMemberModal";
-export const Dashboard = () => {
+import { useLocation } from "react-router-dom";
+export const Dashboard = (props) => {
+  //fetch from App.js to also control in orderPage.js
+  const { openOrderModal, orderModalVisible, closeOrderModal } = props;
+  const location = useLocation();
+
   const [managerName, setManagerName] = useState("");
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
   const [membersIsEmpty, setMembersIsEmpty] = useState(false);
-  const [modalIsVisible, setModalIsVisible] = useState(false); //add member modal
+  const [modalIsVisible, setMemberModalVisible] = useState(false); //add member modal
   const [buttonControlsVisible, setButtonControlsVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   const [startOrderDisabled, setStartOrderButtonDisabled] = useState(false);
-  const [orderModalVisible, setOrderModalVisible] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -33,6 +37,8 @@ export const Dashboard = () => {
   };
 
   const handleDropdown = async (e) => {
+    console.log(e.target.value);
+
     if (e.target.value === "newTeam") {
       setNewTeamModalVisible(true);
       setButtonControlsVisible(false);
@@ -40,7 +46,6 @@ export const Dashboard = () => {
     } else {
       //display team members
       const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
-
       //request team corresponding team members - based on team sport, gender, code
       try {
         const response = await axios.post(
@@ -62,50 +67,51 @@ export const Dashboard = () => {
           sessionStorage.setItem("sport", JSON.stringify(parsed[2]));
         } else {
           setMembersIsEmpty(false);
-          //store for add member modal access
-          sessionStorage.setItem(
-            "sport",
-            JSON.stringify(response.data.members[0].sport)
-          );
-          sessionStorage.setItem(
-            "gender",
-            JSON.stringify(response.data.members[0].sportGender)
-          );
-          sessionStorage.setItem(
-            "code",
-            JSON.stringify(response.data.members[0].teamCode)
-          );
-
           //display add member & start order button when members fetched
           setButtonControlsVisible(true);
           setStartOrderButtonDisabled(false);
           setMembers(response.data.members);
         }
+        //parse to store team details
+        let parsed = e.target.value.split(" ");
+        sessionStorage.setItem(
+          "team",
+          JSON.stringify({
+            yearStart: parsed[0],
+            yearEnd: parsed[1],
+            code: parsed[2],
+            gender: parsed[3],
+            sport: parsed[4],
+          })
+        );
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  //start order modal
-  const openStartOrderModal = () => {
-    setOrderModalVisible(true);
+  //add member modal controls
+  const openMemberModal = () => {
+    setMemberModalVisible(true);
   };
-
-  //add member modal
-  const openModal = () => {
-    setModalIsVisible(true);
-  };
-
   const closeModal = () => {
-    setModalIsVisible(false);
+    setMemberModalVisible(false);
     setNewTeamModalVisible(false);
-    setOrderModalVisible(false);
   };
 
   useEffect(() => {
     fetchTeams();
     fetchManagerName();
+    //check order modal state to render
+    if (
+      location.state &&
+      location.state.openOrderModal &&
+      orderModalVisible === false
+    ) {
+      openOrderModal();
+    } else if (orderModalVisible === true) {
+      closeOrderModal();
+    }
   }, []);
 
   return (
@@ -131,7 +137,15 @@ export const Dashboard = () => {
               {teams.map((team, key) => {
                 //format for server manipulation
                 let optionValue =
-                  team.code + " " + team.gender + " " + team.sport;
+                  team.yearStart +
+                  " " +
+                  team.yearEnd +
+                  " " +
+                  team.code +
+                  " " +
+                  team.gender +
+                  " " +
+                  team.sport;
                 return (
                   <>
                     <option key={key} value={optionValue}>
@@ -147,10 +161,10 @@ export const Dashboard = () => {
               //display control buttons if team.members.length != 0
               buttonControlsVisible ? (
                 <>
-                  <button onClick={openModal}>Add Team Member</button>
+                  <button onClick={openMemberModal}>Add Team Member</button>
                   <button
                     disabled={startOrderDisabled}
-                    onClick={openStartOrderModal}
+                    onClick={openOrderModal}
                   >
                     Start Order
                   </button>
@@ -164,7 +178,7 @@ export const Dashboard = () => {
             />
             <StartOrderModal
               isOpen={orderModalVisible}
-              closeModal={closeModal}
+              closeOrderModal={closeOrderModal}
             />
             <AddMemberModal
               isOpen={modalIsVisible}
