@@ -102,15 +102,14 @@ export const Dashboard = (props) => {
   useEffect(() => {
     fetchTeams();
     fetchManagerName();
-    //check order modal state to render
+
+    //control order modal render - re render when redirect from orderPage
     if (
       location.state &&
       location.state.openOrderModal &&
       orderModalVisible === false
     ) {
       openOrderModal();
-    } else if (orderModalVisible === true) {
-      closeOrderModal();
     }
   }, []);
 
