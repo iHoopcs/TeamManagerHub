@@ -5,7 +5,7 @@ const signup = async (req, res) => {
   const { firstName, lastName, password, email, school } = req.body;
 
   if (!firstName || !lastName || !password || !email || !school) {
-    res.status(400).json({
+    return res.status(400).json({
       errMsg: "An error occurred! - Missing payload data",
     });
   }
@@ -30,12 +30,12 @@ const signup = async (req, res) => {
 
     //save to db
     newManager.save();
-    res.status(201).json({
+    return res.status(201).json({
       signupMsg: "account created",
       obj: newManager,
     });
   } catch (err) {
-    res.status(400).json({ errMsg: err });
+    return res.status(400).json({ errMsg: err });
   }
 };
 

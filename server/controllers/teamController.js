@@ -13,7 +13,9 @@ const addMember = async (req, res) => {
   try {
     const foundManager = await Manager.findOne({ email: email });
     if (!foundManager) {
-      res.status(400).json({ msg: "error occurred accessing account data" });
+      return res
+        .status(400)
+        .json({ msg: "error occurred accessing account data" });
     } else {
       //check that teams array !empty
       if (foundManager.teams.length !== 0) {
@@ -43,7 +45,7 @@ const addMember = async (req, res) => {
             console.log(foundManager.teams[i]);
 
             //send updated [] to re render
-            res.status(201).json({
+            return res.status(201).json({
               msg: "*member added*",
               updatedMembers: foundManager.teams[i].members,
             });
@@ -54,7 +56,7 @@ const addMember = async (req, res) => {
           }
         }
       } else {
-        res.status(200).json({ msg: "*no teams available to alter*" });
+        return res.status(200).json({ msg: "*no teams available to alter*" });
       }
     }
   } catch (err) {
@@ -78,7 +80,7 @@ const fetchTeamMembers = async (req, res) => {
     !selectedTeamSportGender ||
     !selectedTeamSport
   ) {
-    res.status(400).json({ msg: "missing payload data" });
+    return res.status(400).json({ msg: "missing payload data" });
   }
 
   try {
@@ -98,7 +100,7 @@ const fetchTeamMembers = async (req, res) => {
     }
     console.log(foundTeam);
     //return members
-    res.status(200).json({
+    return res.status(200).json({
       msg: "members fetched",
       members: foundTeam.members,
     });
@@ -111,7 +113,7 @@ const fetchTeamMembers = async (req, res) => {
 const fetchTeams = async (req, res) => {
   const { email } = req.body;
   if (!email) {
-    res.status(400).json({ msg: "missing payload data" });
+    return res.status(400).json({ msg: "missing payload data" });
   }
   try {
     //access manager account
@@ -122,7 +124,7 @@ const fetchTeams = async (req, res) => {
     for (let i = 0; i < foundManager.teams.length; i++) {
       teams.push(foundManager.teams[i]);
     }
-    res.status(200).json({
+    return res.status(200).json({
       msg: "*teams fetched*",
       teams: teams,
     });
@@ -141,14 +143,16 @@ const createTeam = async (req, res) => {
   console.log(req.body);
   //check that received payload isn't empty
   if (!email || !team || !school) {
-    res.status(400).json({ msg: "missing payload data" });
+    return res.status(400).json({ msg: "missing payload data" });
   }
 
   try {
     //access manager account
     const foundManager = await Manager.findOne({ email: email });
     if (!foundManager) {
-      res.status(400).json({ msg: "error accessing manager account data" });
+      return res
+        .status(400)
+        .json({ msg: "error accessing manager account data" });
     } else {
       //parse school to get code
       let parsed = school.split(" ");
@@ -173,7 +177,7 @@ const createTeam = async (req, res) => {
       //update manager's account
       foundManager.save();
 
-      res.status(201).json({
+      return res.status(201).json({
         updatedTeams: foundManager.teams,
         msg: "new team created",
         schoolCode: schoolCode,

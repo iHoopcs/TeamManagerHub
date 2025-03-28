@@ -10,7 +10,7 @@ const createRestaurant = async (req, res) => {
     restaurantName: payload.restName,
   });
   if (foundRestaurant) {
-    res.status(200).json({ msg: "restaurant already exists" });
+    return res.status(200).json({ msg: "restaurant already exists" });
   }
   //apply to new restaurant object
   const newRestaurant = Restaurant({
@@ -21,7 +21,7 @@ const createRestaurant = async (req, res) => {
   //save
   newRestaurant.save();
 
-  res.status(201).json({ msg: "restaurant created" });
+  return res.status(201).json({ msg: "restaurant created" });
 };
 
 const addMenuItem = async (req, res) => {
@@ -33,7 +33,7 @@ const addMenuItem = async (req, res) => {
     restaurantName: restaurantName,
   });
   if (!foundRestaurant) {
-    res.status(404).json({ msg: "error accessing restaurant details" });
+    return res.status(404).json({ msg: "error accessing restaurant details" });
   }
   const newMenuItem = MenuItem({
     itemName: payload.itemName,
@@ -48,7 +48,7 @@ const addMenuItem = async (req, res) => {
   //save changes
   foundRestaurant.save();
 
-  res.status(201).json({ msg: "menu item added" });
+  return res.status(201).json({ msg: "menu item added" });
 };
 
 const fetchRestaurant = async (req, res) => {
@@ -59,9 +59,9 @@ const fetchRestaurant = async (req, res) => {
     restaurantName: restaurantName,
   });
   if (!foundRestaurant) {
-    res.status(404).json({ msg: "error accessing restaurant" });
+    return res.status(404).json({ msg: "error accessing restaurant" });
   }
-  res.status(200).json({
+  return res.status(200).json({
     restaurant: foundRestaurant,
     msg: "restaurant fetched",
   });

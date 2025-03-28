@@ -48,10 +48,17 @@ export const OrderPage = (props) => {
           tempore!
         </div>
         {/* display menu items */}
-        <div className="menu-items">
-          {menu.map((item, index) => {
-            return <MenuItem item={item} key={index} />;
-          })}
+        <div className="menu">
+          <div className="menu-filter">
+            <button>Breakfast</button>
+            <button>Lunch</button>
+            <button>Dinner</button>
+          </div>
+          <div className="menu-items">
+            {menu.map((item, index) => {
+              return <MenuItem item={item} key={index} />;
+            })}
+          </div>
         </div>
 
         {/* TODO: */}
