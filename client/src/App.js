@@ -36,7 +36,7 @@ export const App = () => {
               <Route
                 key={index}
                 path={`/restaurants/order/${index}/${item.name}`}
-                element={<OrderPage name={item.name} />}
+                element={<OrderPage restaurantName={item.name} />}
               />
             );
           })}
