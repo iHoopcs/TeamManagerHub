@@ -50,7 +50,24 @@ const addMenuItem = async (req, res) => {
 
   res.status(201).json({ msg: "menu item added" });
 };
+
+const fetchRestaurant = async (req, res) => {
+  //query url
+  const restaurantName = req.query.name;
+  //find restaurant
+  const foundRestaurant = await Restaurant.findOne({
+    restaurantName: restaurantName,
+  });
+  if (!foundRestaurant) {
+    res.status(404).json({ msg: "error accessing restaurant" });
+  }
+  res.status(200).json({
+    restaurant: foundRestaurant,
+    msg: "restaurant fetched",
+  });
+};
 module.exports = {
   createRestaurant,
   addMenuItem,
+  fetchRestaurant,
 };
