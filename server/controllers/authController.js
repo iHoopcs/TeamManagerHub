@@ -1,4 +1,5 @@
 const Manager = require("../models/manager");
+const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
   console.log(req.body);
@@ -20,16 +21,18 @@ const signup = async (req, res) => {
       return res.status(200).json({ signupMsg: "account already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newManager = Manager({
       firstName: firstName,
       lastName: lastName,
-      password: password,
+      password: hashedPassword,
       email: email,
       school: school,
     });
-
+    console.log(newManager);
     //save to db
-    newManager.save();
+    // newManager.save();
     res.status(201).json({
       signupMsg: "account created",
       obj: newManager,
@@ -39,34 +42,7 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password)
-    return res.status(400).json({ errMsg: "missing payload data" });
-  Manager.findOne({
-    email: email,
-  }).then(async (foundManager) => {
-    if (foundManager) {
-      if (foundManager.password === password) {
-        return res.status(200).json({
-          redirect: true,
-          managerEmail: foundManager.email,
-          firstName: foundManager.firstName,
-          school: foundManager.school,
-        });
-      } else {
-        return res.status(200).json({
-          redirect: false,
-          errMsg: "incorrect password",
-        });
-      }
-    } else {
-      return res.status(400).json({
-        errMsg: "Could not find account with that email",
-      });
-    }
-  });
+const login = async (req, res, next) => {
 };
 
 module.exports = {
