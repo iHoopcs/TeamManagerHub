@@ -47,26 +47,30 @@ const login = async (req, res) => {
 
   if (!email || !password)
     return res.status(400).json({ errMsg: "missing payload data" });
-
-  try {
-    const foundManager = await Manager.findOne({ email });
-    if (!foundManager)
-      return res
-        .status(400)
-        .json({ msg: "Account not found with email provided" });
-
-    const isMatch = bcrypt.compare(password, foundManager.password);
-    if (!isMatch) return res.status(400).json({ msg: "Incorrect password" });
-
-    return res.status(200).json({
-      redirect: true,
-      managerEmail: foundManager.email,
-      firstName: foundManager.firstName,
-      school: foundManager.school,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  await Manager.findOne({
+    email: email,
+  }).then(async (foundManager) => {
+    if (foundManager) {
+      const isMatch = await bcrypt.compare(password, foundManager.password);
+      if (isMatch) {
+        return res.status(200).json({
+          redirect: true,
+          managerEmail: foundManager.email,
+          firstName: foundManager.firstName,
+          school: foundManager.school,
+        });
+      } else {
+        return res.status(400).json({
+          redirect: false,
+          errMsg: "incorrect password",
+        });
+      }
+    } else {
+      return res.status(400).json({
+        errMsg: "Could not find account with that email",
+      });
+    }
+  });
 };
 
 module.exports = {

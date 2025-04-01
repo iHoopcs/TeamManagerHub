@@ -85,3 +85,8 @@
   background-color: azure;
   cursor: pointer;
 }
+
+.login-err {
+  color: red;
+  opacity: 70%;
+}

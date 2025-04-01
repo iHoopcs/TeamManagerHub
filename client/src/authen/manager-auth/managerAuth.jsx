@@ -38,6 +38,8 @@ export const ManagerAuthComponent = () => {
   //login payload
   const [managerLoginEmail, setManagerLoginEmail] = useState("");
   const [managerLoginPassword, setManagerLoginPassword] = useState("");
+  //request error handling
+  const [errMsg, setErrMsg] = useState(null);
   const handleLoginManager = async (e) => {
     e.preventDefault();
     //construct login payload
@@ -52,8 +54,10 @@ export const ManagerAuthComponent = () => {
         payload
       );
       console.log(response);
+      //check for err --> display err
     } catch (err) {
       console.log(err);
+      setErrMsg(err.response.data.errMsg);
     }
     //redirect to dashboard
   };
@@ -179,6 +183,8 @@ export const ManagerAuthComponent = () => {
             </div>
           </form>
         ) : null}
+
+        {errMsg ? <h4 className="login-err">*{errMsg}*</h4> : null}
       </div>
     </div>
   );
