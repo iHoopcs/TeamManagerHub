@@ -13,6 +13,7 @@ app.use(express.json());
 //routes
 app.use("/api/auth", authRoutes);
 app.use("/api/", teamRoutes);
+
 //db
 mongoose
   .connect(

@@ -42,7 +42,31 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password)
+    return res.status(400).json({ errMsg: "missing payload data" });
+
+  try {
+    const foundManager = await Manager.findOne({ email });
+    if (!foundManager)
+      return res
+        .status(400)
+        .json({ msg: "Account not found with email provided" });
+
+    const isMatch = bcrypt.compare(password, foundManager.password);
+    if (!isMatch) return res.status(400).json({ msg: "Incorrect password" });
+
+    return res.status(200).json({
+      redirect: true,
+      managerEmail: foundManager.email,
+      firstName: foundManager.firstName,
+      school: foundManager.school,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = {
