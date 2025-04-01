@@ -1,0 +1,39 @@
+.team-member-flexbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.team-member-flexbox-child-1,
+.team-member-flexbox-child-2 {
+  width: 100%;
+}
+.team-member-flexbox-child-1 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* member login button */
+.team-member-flexbox-child-1 > button:nth-of-type(1) {
+  width: 100%;
+  max-width: 30rem;
+  height: 5rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: large;
+}
+/* Actually manager? button */
+.team-member-flexbox-child-1 > button:nth-of-type(2) {
+  width: 100%;
+  max-width: fit-content;
+  white-space: nowrap;
+  margin-top: 20px;
+  border: 2px solid black;
+  padding: 15px;
+  font-size: small;
+  font-weight: bold;
+  border-radius: 10px;
+}
+.team-member-flexbox-child-1 > button:nth-of-type(2):hover {
+  background-color: azure;
+  cursor: pointer;
+}

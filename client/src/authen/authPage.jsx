@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./auth-styles.css";
 import { ManagerAuthComponent } from "./manager-auth/managerAuth";
+import { MemberAuthComponent } from "./member-auth/memberAuth";
 
 export const AuthPage = () => {
   //control manager vs member display
@@ -19,7 +20,11 @@ export const AuthPage = () => {
               setUserIsTeamMember={setUserIsTeamMember}
             />
           ) : userIsTeamMember ? (
-            <h1>Team member is logging in...</h1>
+            //User = member
+            <MemberAuthComponent
+              setUserIsManager={setUserIsManager}
+              setUserIsTeamMember={setUserIsTeamMember}
+            />
           ) : (
             <>
               <h2>Please select your role?</h2>
