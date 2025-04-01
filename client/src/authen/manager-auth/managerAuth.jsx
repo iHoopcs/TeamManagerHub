@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "./managerAuth-styles.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 export const ManagerAuthComponent = (props) => {
   const { setUserIsManager, setUserIsTeamMember } = props;
+  const nav = useNavigate();
 
   //login vs signup display control
   const [returningManager, setReturningManager] = useState(false);
@@ -62,6 +65,9 @@ export const ManagerAuthComponent = (props) => {
         payload
       );
       console.log(response);
+      if (response.data.redirect) {
+        nav("/dashboard");
+      }
       //check for err --> display err
     } catch (err) {
       console.log(err);
