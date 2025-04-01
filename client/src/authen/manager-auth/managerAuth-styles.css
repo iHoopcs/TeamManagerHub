@@ -100,3 +100,19 @@
   color: orange;
   opacity: 85%;
 }
+
+.to-member-login {
+  width: 100%;
+  max-width: fit-content;
+  white-space: nowrap;
+  padding: 15px;
+  margin-left: 25%;
+  margin-top: 20px;
+  font-size: small;
+  font-weight: bold;
+  border-radius: 10px;
+}
+.to-member-login:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}

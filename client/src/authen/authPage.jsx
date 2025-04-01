@@ -14,7 +14,10 @@ export const AuthPage = () => {
         {
           // User = Manager
           userIsManager ? (
-            <ManagerAuthComponent />
+            <ManagerAuthComponent
+              setUserIsManager={setUserIsManager}
+              setUserIsTeamMember={setUserIsTeamMember}
+            />
           ) : userIsTeamMember ? (
             <h1>Team member is logging in...</h1>
           ) : (

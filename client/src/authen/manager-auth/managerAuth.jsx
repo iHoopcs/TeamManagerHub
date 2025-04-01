@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./managerAuth-styles.css";
 import axios from "axios";
-export const ManagerAuthComponent = () => {
+export const ManagerAuthComponent = (props) => {
+  const { setUserIsManager, setUserIsTeamMember } = props;
+
   //login vs signup display control
   const [returningManager, setReturningManager] = useState(false);
   const [newManager, setNewManager] = useState(false);
@@ -97,6 +99,15 @@ export const ManagerAuthComponent = () => {
             Manager Register
           </button>
         </div>
+        <button
+          className="to-member-login"
+          onClick={() => {
+            setUserIsManager(false);
+            setUserIsTeamMember(true);
+          }}
+        >
+          Actually a team member?
+        </button>
       </div>
       {/* display corresponding form underneath */}
       <div className="manager-flexbox-child-2">
