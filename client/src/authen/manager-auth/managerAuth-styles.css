@@ -30,9 +30,58 @@
   background-color: aliceblue;
   cursor: pointer;
 }
-
+/* onclick - disable and alter styles of buttons */
 .child-flexbox-item-1 > button:disabled,
 .child-flexbox-item-2 > button:disabled {
   cursor: auto;
   background-color: #f0f0f0;
+}
+
+/* corresponding form content */
+.manager-flexbox-child-2 {
+  width: 100%;
+  margin: auto; /*center inside parent flexbox*/
+}
+.form-flexbox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto; /*center inside parent flexbox*/
+}
+.flexbox-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; /*input & labels center vertically*/
+}
+.flexbox-item > label,
+.flexbox-item > input {
+  width: 100%;
+  margin: 10px;
+}
+.flexbox-item > label {
+  font-size: larger;
+  width: 100%;
+  text-align: center;
+}
+.flexbox-item > input {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: aliceblue;
+  color: black;
+  padding: 10px;
+  font-size: larger;
+}
+.flexbox-item > button {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 20rem;
+  font-size: large;
+  padding: 10px;
+  margin-top: 10px;
+}
+.flexbox-item > button:hover {
+  background-color: azure;
+  cursor: pointer;
 }

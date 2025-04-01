@@ -8,17 +8,13 @@ export const ManagerAuthComponent = () => {
   //register payload
 
   //login payload
-
+  const [managerLoginEmail, setManagerLoginEmail] = useState("");
+  const [managerLoginPassword, setManagerLoginPassword] = useState("");
   const handleManagerLogin = async () => {
-    //display login form & hide register form
-    setReturningManager(true);
-    setNewManager(false);
-  };
-
-  const handleManagerRegister = async () => {
-    //display register form & hide login form
-    setNewManager(true);
-    setReturningManager(false);
+    //create form payload
+    //send to server
+    //receive response
+    //redirect
   };
 
   return (
@@ -26,13 +22,25 @@ export const ManagerAuthComponent = () => {
       {/* auth buttons side by side */}
       <div className="manager-flexbox-child-1">
         <div className="child-flexbox-item-1">
-          <button onClick={handleManagerLogin} disabled={returningManager}>
+          <button
+            onClick={() => {
+              setReturningManager(true);
+              setNewManager(false);
+            }}
+            disabled={returningManager}
+          >
             Manager Login
           </button>
         </div>
 
         <div className="child-flexbox-item-2">
-          <button onClick={handleManagerRegister} disabled={newManager}>
+          <button
+            onClick={() => {
+              setNewManager(true);
+              setReturningManager(false);
+            }}
+            disabled={newManager}
+          >
             Manager Register
           </button>
         </div>
@@ -40,7 +48,34 @@ export const ManagerAuthComponent = () => {
       {/* display corresponding form underneath */}
       <div className="manager-flexbox-child-2">
         {returningManager ? (
-          <h1>Login creds...</h1>
+          // Sign In form
+          <form className="form-flexbox" onSubmit={handleManagerLogin}>
+            <div className="flexbox-item">
+              <label>Email</label>
+              <input
+                type="email"
+                required
+                placeholder="Enter your account school email"
+                value={managerLoginEmail}
+                onChange={(e) => setManagerLoginEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="flexbox-item">
+              <label>Password</label>
+              <input
+                type="password"
+                required
+                placeholder="Enter your account password"
+                value={managerLoginPassword}
+                onChange={(e) => setManagerLoginPassword(e.target.value)}
+              />
+            </div>
+
+            <div className="flexbox-item">
+              <button type="submit">Sign in</button>
+            </div>
+          </form>
         ) : newManager ? (
           <h1>Register creds...</h1>
         ) : null}
