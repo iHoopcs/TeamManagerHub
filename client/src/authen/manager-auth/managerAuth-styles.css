@@ -90,3 +90,13 @@
   color: red;
   opacity: 70%;
 }
+
+.register-success {
+  color: green;
+  opacity: 85%;
+}
+
+.register-exists {
+  color: orange;
+  opacity: 85%;
+}

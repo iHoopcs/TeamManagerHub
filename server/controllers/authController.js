@@ -18,7 +18,7 @@ const signup = async (req, res) => {
     });
 
     if (existManager) {
-      return res.status(200).json({ signupMsg: "account already exists" });
+      return res.status(400).json({ signupMsg: "account already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

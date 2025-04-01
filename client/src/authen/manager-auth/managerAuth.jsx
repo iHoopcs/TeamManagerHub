@@ -12,6 +12,9 @@ export const ManagerAuthComponent = () => {
   const [password, setPassword] = useState("");
   const [managerRegisterEmail, setManagerRegisterEmail] = useState("");
   const [school, setSchool] = useState("");
+  //success msg
+  const [registerMsg, setRegisterMsg] = useState(null);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
   const handleRegisterManager = async (e) => {
     e.preventDefault();
     //construct register payload
@@ -29,8 +32,11 @@ export const ManagerAuthComponent = () => {
         payload
       );
       console.log(response);
+      setRegisterSuccess(true);
+      setRegisterMsg(response.data.signupMsg);
     } catch (err) {
       console.log(err);
+      setRegisterMsg(err.response.data.signupMsg);
     }
     //redirect to login
   };
@@ -39,7 +45,7 @@ export const ManagerAuthComponent = () => {
   const [managerLoginEmail, setManagerLoginEmail] = useState("");
   const [managerLoginPassword, setManagerLoginPassword] = useState("");
   //request error handling
-  const [errMsg, setErrMsg] = useState(null);
+  const [loginErrMsg, setLoginErrMsg] = useState(null);
   const handleLoginManager = async (e) => {
     e.preventDefault();
     //construct login payload
@@ -57,7 +63,7 @@ export const ManagerAuthComponent = () => {
       //check for err --> display err
     } catch (err) {
       console.log(err);
-      setErrMsg(err.response.data.errMsg);
+      setLoginErrMsg(err.response.data.errMsg);
     }
     //redirect to dashboard
   };
@@ -71,6 +77,7 @@ export const ManagerAuthComponent = () => {
             onClick={() => {
               setReturningManager(true);
               setNewManager(false);
+              setRegisterMsg(null);
             }}
             disabled={returningManager}
           >
@@ -83,6 +90,7 @@ export const ManagerAuthComponent = () => {
             onClick={() => {
               setNewManager(true);
               setReturningManager(false);
+              setLoginErrMsg(null);
             }}
             disabled={newManager}
           >
@@ -184,7 +192,14 @@ export const ManagerAuthComponent = () => {
           </form>
         ) : null}
 
-        {errMsg ? <h4 className="login-err">*{errMsg}*</h4> : null}
+        {loginErrMsg ? <h3 className="login-err">*{loginErrMsg}*</h3> : null}
+        {registerMsg ? (
+          <h3
+            className={registerSuccess ? "register-success" : "register-exists"}
+          >
+            *{registerMsg}*
+          </h3>
+        ) : null}
       </div>
     </div>
   );
