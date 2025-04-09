@@ -32,7 +32,7 @@ const signup = async (req, res) => {
     });
     console.log(newManager);
     //save to db
-    // newManager.save();
+    newManager.save();
     res.status(201).json({
       signupMsg: "account created",
       obj: newManager,

@@ -27,6 +27,13 @@ body {
   display: flex;
   gap: 20px;
 }
+/* profile header item - TODO*/
+.header .header-item:nth-child(3) {
+}
+/* logout button */
+.header .header-item:nth-child(3) > button:nth-of-type(2) {
+  background-color: red;
+}
 
 .header-item > button {
   padding: 20px;

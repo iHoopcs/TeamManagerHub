@@ -4,8 +4,11 @@ import axios from "axios";
 import { Modal } from "./add-member-modal/modal";
 import { NewTeamModal } from "./create-team-modal/newTeamModal";
 import { StartOrderModal } from "./start-order-modal/startOrderModal";
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
+  const nav = useNavigate();
+
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
   const [membersIsEmpty, setMembersIsEmpty] = useState(false);
@@ -14,6 +17,8 @@ export const Dashboard = () => {
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   const [startOrderDisabled, setStartOrderButtonDisabled] = useState(false);
   const [orderModalVisible, setOrderModalVisible] = useState(false);
+  const [displayLogoutButton, setDisplayLogoutButton] = useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
   const fetchTeams = async (req, res) => {
     const storedEmail = JSON.parse(sessionStorage.getItem("managerEmail"));
@@ -115,7 +120,16 @@ export const Dashboard = () => {
             <button>Order</button>
           </div>
           <div className="header-item">
-            <button>Profile</button>
+            <button
+              onClick={() => setDisplayLogoutButton(!displayLogoutButton)}
+            >
+              Profile
+            </button>
+            {displayLogoutButton ? (
+              <button onClick={() => setLogoutModalVisible(true)}>
+                Logout
+              </button>
+            ) : null}
           </div>
         </div>
         <div className="sidebar"></div>
@@ -173,6 +187,32 @@ export const Dashboard = () => {
               setMembers={setMembers}
             />
           </div>
+
+          {/* Are you sure? Modal */}
+          {logoutModalVisible ? (
+            <div className="modal">
+              <div className="modal-background">
+                <div className="modal-content">
+                  <h1>Are you sure?</h1>
+                  <button
+                    onClick={() => {
+                      setLogoutModalVisible(false);
+                      nav("/");
+                    }}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLogoutModalVisible(false);
+                    }}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : null}
 
           {/* Display team members for respective team onclick team */}
           <div className="members-container-flexbox">
