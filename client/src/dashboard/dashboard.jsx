@@ -104,7 +104,28 @@ export const Dashboard = () => {
     setOrderModalVisible(false);
   };
 
+  const verifyUser = async () => {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    // verify user authenticated & jwt stored
+    // fetch user data info to utilize team functions
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/auth/verify",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+    } catch (err) {
+      if (err.request.status != 200) nav("/");
+      console.log(err.response.status);
+    }
+  };
+
   useEffect(() => {
+    verifyUser();
     fetchTeams();
   }, []);
 

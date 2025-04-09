@@ -65,10 +65,10 @@ export const ManagerAuthComponent = (props) => {
         payload
       );
       console.log(response);
-      if (response.data.redirect) {
+      if (response.data.token) {
+        sessionStorage.setItem("token", JSON.stringify(response.data.token));
         nav("/dashboard");
       }
-      //check for err --> display err
     } catch (err) {
       console.log(err);
       setLoginErrMsg(err.response.data.errMsg);

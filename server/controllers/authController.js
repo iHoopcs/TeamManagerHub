@@ -1,5 +1,7 @@
 const Manager = require("../models/manager");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const signup = async (req, res) => {
   console.log(req.body);
@@ -53,12 +55,13 @@ const login = async (req, res) => {
     if (foundManager) {
       const isMatch = await bcrypt.compare(password, foundManager.password);
       if (isMatch) {
-        return res.status(200).json({
-          redirect: true,
-          managerEmail: foundManager.email,
-          firstName: foundManager.firstName,
-          school: foundManager.school,
-        });
+        // generate JWT
+        const payload = {
+          id: foundManager.id,
+          email: foundManager.email,
+        };
+        const token = jwt.sign(payload, process.env.key, { expiresIn: "1hr" });
+        return res.status(200).json({ token: token });
       } else {
         return res.status(400).json({
           redirect: false,
@@ -73,7 +76,23 @@ const login = async (req, res) => {
   });
 };
 
+const verifyUser = async (req, res) => {
+  // fetch jwt token
+  //verify token
+  //return user data info
+  const authHeader = req.headers.authorization;
+  const splitData = authHeader.split(" ");
+  const token = splitData[1];
+  console.log(token);
+  if (!token) return res.sendStatus(403);
+  jwt.verify(token, process.env.key, async (err, decoded) => {
+    if (err) return res.sendStatus(403);
+    res.sendStatus(200);
+  });
+};
+
 module.exports = {
   signup,
   login,
+  verifyUser,
 };

@@ -16,9 +16,7 @@ app.use("/api/", teamRoutes);
 
 //db
 mongoose
-  .connect(
-    "mongodb+srv://iHoopcs:kZdAIyWlbASPeXAr@cluster1.gtarcla.mongodb.net/TeamManageHub?retryWrites=true&w=majority&appName=Cluster1"
-  )
+  .connect(process.env.db_uri)
   .then(() => {
     console.log("db connected!"),
       app.listen(8080, () => {
